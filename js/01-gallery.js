@@ -40,7 +40,9 @@ function addListenerEscKey(evt) {
 }
 
 function closeModal(evt) {
-  if (evt.code === "Escape") {
-    instance.close();
+  if (evt.code !== "Escape") {
+    return;
   }
+  instance.close();
+  window.removeEventListener("keydown", closeModal);
 }
