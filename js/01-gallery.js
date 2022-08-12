@@ -10,12 +10,14 @@ galleryItems.forEach(({ preview, original, description }) => {
       class="gallery__image"
       src=${preview}
       data-source=${original}
-      alt=${description}
+      alt=${description}  
     />
   </a>
 </div>`;
   galleryContainer.insertAdjacentHTML("beforeend", markupGallery);
 });
+
+let instance;
 
 galleryContainer.addEventListener("click", onGetRefOriginalImg);
 
@@ -26,11 +28,19 @@ function onGetRefOriginalImg(evt) {
     return;
   }
   const originalImgRef = evt.target.dataset.source;
-  console.log(evt.target.src);
-  const instance = basicLightbox.create(`
-    <img src=${originalImgRef}>
-`);
-
+  instance = basicLightbox.create(`
+      <img src=${originalImgRef}>
+  `);
   instance.show();
-  return originalImgRef;
+  addListenerEscKey();
+}
+
+function addListenerEscKey(evt) {
+  window.addEventListener("keydown", closeModal, { once: true });
+}
+
+function closeModal(evt) {
+  if (evt.code === "Escape") {
+    instance.close();
+  }
 }
